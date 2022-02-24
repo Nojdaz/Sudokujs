@@ -1,0 +1,138 @@
+<script src="https://unpkg.com/vue@3"></script>
+
+<div id="app">
+    <table>
+        <tr v-for="row in sudoku">
+            <td v-for="column in row">
+                {{column}}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                message: 'Hello Vue!',
+                size: 4
+            }
+        },
+        methods: {
+            duplicateExists(board, x, y) {
+               if(this.duplicateRow(board, y) || this.duplicateCol(board, x) || this.duplicateBox(board, x, y)){
+                   return true
+               }
+               return false
+            },
+            duplicateRow(board, y) { 
+                let numbers = new Array()
+                for(var i = 0; i < 4; i++){
+                    if(board[i][y] !== 0){
+                        if(numbers.includes(board[i][y])){
+                            return true
+                        }
+                        else{
+                            numbers.push(board[i][y])}
+                    }
+                }
+                return false
+            },
+            duplicateCol(board, x) {
+                let numbers = new Array()
+                for (var i = 0; i < 4; i++){
+                    if(board[x][i] !== 0){
+                        if(numbers.includes(board[x][i])){
+                            return true
+                        } else{
+                            numbers.push(board[x][i])
+                        }
+                    }
+                }
+                return false
+             },
+            duplicateBox(board, x, y) {
+                boxX = Math.floor(x / 2)
+                boxY = Math.floor(y / 2)
+                let numbers = []
+                for (var i = 0; i < 2; i++) {
+                    for (var j = 0; j < 2; j++) {
+                        x = i + 2 * boxX;
+                        y = j + 2 * boxY;
+                        if (board[x][y] !== 0) {
+                            if (numbers.includes(board[x][y])) {
+                                return true
+                            }
+                            else {
+                                numbers.push(board[x][y])
+                            }
+                        }
+                    }
+                }
+                return false
+            }
+        },
+        computed: {
+            sudoku() {
+                let board = []
+                for (let x = 0; x < this.size; x++) {
+                    board[x] = []
+                    for (let y = 0; y < this.size; y++) {
+                        board[x][y] = 0
+                    }
+                }
+                let numbersDone = 0
+                while (numbersDone < 6) {
+                    X = Math.floor(Math.random() * this.size)
+                    Y = Math.floor(Math.random() * this.size)
+                    num = Math.floor(Math.random() * this.size) + 1
+
+                    if (board[X][Y] === 0) {
+                        board[X][Y] = num
+                        if(this.duplicateExists(board, X, Y)){
+                            board[X][Y] = 0
+                            continue
+                        }
+                        else{
+                            numbersDone++
+                        }
+                    }
+                }
+
+                return board
+            }
+        }
+    }).mount('#app')
+</script>
+<style>
+    html {
+        margin: 0;
+        height: 100vh;
+    }
+
+    #app {
+        height: 100vh;
+    }
+
+    table {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: scale(2) translate(-50%, -50%);
+        transform-origin: top left;
+
+    }
+
+    table,
+    td {
+        border: 1px solid;
+
+    }
+
+    td {
+        padding: 5px;
+        border-radius: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
