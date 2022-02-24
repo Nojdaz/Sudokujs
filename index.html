@@ -28,7 +28,7 @@
             duplicateRow(board, y) { 
                 let numbers = new Array()
                 for(var i = 0; i < 4; i++){
-                    if(board[i][y] !== 0){
+                    if(board[i][y] !== "_"){
                         if(numbers.includes(board[i][y])){
                             return true
                         }
@@ -41,7 +41,7 @@
             duplicateCol(board, x) {
                 let numbers = new Array()
                 for (var i = 0; i < 4; i++){
-                    if(board[x][i] !== 0){
+                    if(board[x][i] !== "_"){
                         if(numbers.includes(board[x][i])){
                             return true
                         } else{
@@ -59,7 +59,7 @@
                     for (var j = 0; j < 2; j++) {
                         x = i + 2 * boxX;
                         y = j + 2 * boxY;
-                        if (board[x][y] !== 0) {
+                        if (board[x][y] !== "_") {
                             if (numbers.includes(board[x][y])) {
                                 return true
                             }
@@ -78,7 +78,7 @@
                 for (let x = 0; x < this.size; x++) {
                     board[x] = []
                     for (let y = 0; y < this.size; y++) {
-                        board[x][y] = 0
+                        board[x][y] = "_"
                     }
                 }
                 let numbersDone = 0
@@ -87,10 +87,10 @@
                     Y = Math.floor(Math.random() * this.size)
                     num = Math.floor(Math.random() * this.size) + 1
 
-                    if (board[X][Y] === 0) {
+                    if (board[X][Y] === "_") {
                         board[X][Y] = num
                         if(this.duplicateExists(board, X, Y)){
-                            board[X][Y] = 0
+                            board[X][Y] = "_"
                             continue
                         }
                         else{
